@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+body {
+  @apply w-full h-full;
+}
+
+.homepage {
+  @apply relative w-full h-screen bg-gray-800 text-white px-[3rem] py-[5rem] text-center;
+}
+
+.homepage h1 {
+  @apply text-[3rem] md:text-[5.5rem] font-black w-[85%] mx-auto mb-[2rem];
+}
+
+.homepage p {
+  @apply text-[1.1rem] md:text-[1.4rem] w-[90%] mx-auto;
+}
+
+.homepage .btn-dashboard {
+  @apply mt-[2rem];
+}
+
+.btn {
+  box-shadow: 0 0 20px 0px #ffffff38;
+  @apply px-[1rem] py-[0.5rem] text-[1.4rem] cursor-pointer transition-all duration-300 ease-in;
+}
+
+.btn-outline {
+  border: 1px solid #fff;
+}
+
+.btn-outline:hover {
+  @apply px-[1.3rem];
+}
+
+.btn-fill {
+  @apply bg-black;
+}
+
+.btn-fill:hover {
+  @apply bg-white text-black;
+}
+
+.login-prompt {
+  box-shadow: 0 0 10px 1px #ffffff42;
+  top: 50%;
+  left: 50%;
+  display: block;
+  transform: translate(-50%, -50%);
+  animation: popUpAnim 1s;
+  @apply absolute bg-amber-600 px-[3rem] py-[2rem] rounded-md md:px-[6rem];
+}
+
+.login-prompt p {
+  @apply text-[0.9rem] w-full mb-[1rem];
+}
+
+.login-prompt hr {
+  @apply my-[1.5rem];
+}
+
+.homepage .blur {
+  filter: blur(10px);
+}
+
+@keyframes popUpAnim {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -35%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.login-prompt .close-btn{
+  border:1px solid #fff;
+  @apply absolute right-0 top-0 w-[30px] h-[30px] flex items-center justify-center rounded-full;
+}
+
+.login-prompt .close-btn button{
+  
+  @apply transition-all duration-300 ease-in w-full h-full cursor-pointer;
+}
+
+.login-prompt .close-btn button:hover{
+  @apply text-black font-bold ;
+}
+
+/* Login part */
+
+.login-page{
+  background-image: url("/website/src/assets/login-background.png");
+  @apply w-full h-full pt-[5rem];
+}
+
+.login-page h1{
+ @apply text-center text-[3rem]; 
+}
+
+.login-container{
+  @apply bg-gray-700 text-white w-[350px] mx-auto mt-[5rem] px-[2rem] py-[2rem] rounded-md;
+}
+
+.login-container h3{
+  @apply text-[1.3rem] text-center font-bold pb-[2rem];
+}
+
+.login-container input{
+  @apply w-full bg-gray-100 mb-[1rem] px-[0.5rem] py-[0.2rem] text-black outline-none rounded-sm;
+}
+
+.login-container hr{
+  @apply my-[1rem];
+}
+
+.addon-login{
+  @apply flex gap-[1rem];
+}
+
+.addon-login-options{
+  @apply flex items-center flex-row justify-between mb-[1rem];
+}
+.login-remember-section{
+  @apply flex items-start justify-start gap-[0.5rem];
+}
+
+.login-remember-section label{
+  @apply p-0 m-0;
+}
+.login-remember-section input{
+  @apply my-auto;
+}
+.input-box{
+  @apply relative flex items-start gap-2 justify-start mb-[1rem];
+}
+
+.input-box input{
+  @apply w-[5.6rem];
+}
+
+.filename{
+  top:35px;
+  left:0;
+  font-size:10px;
+  @apply absolute text-amber-600;
+}
