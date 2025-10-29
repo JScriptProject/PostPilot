@@ -1,4 +1,5 @@
 import React,{useState} from 'react';
+import {signupConnect} from '../api/auth.api.js';
 import { Link } from 'react-router-dom';
 
 function Signup() {
@@ -13,10 +14,8 @@ function Signup() {
 
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState(null);
-
-
+  const [loading, setLoading] = useState(false);
   const { fname, email, password, confirm_password, organization, profile_photo} = form;
-
   const onChange = (e) => {
     let file = null;
     const { name, value } = e.target;
@@ -30,7 +29,7 @@ function Signup() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log("Form data =>", form);
     const formData = new FormData();
@@ -42,6 +41,8 @@ formData.append("organization", form.organization);
 formData.append("profile_photo", file); 
 if(password === confirm_password){
 console.log("Great!!");
+const result = await signupConnect(formData);
+console.log("Result =>", result.message);
 }
 else{
   console.log("password should match");
