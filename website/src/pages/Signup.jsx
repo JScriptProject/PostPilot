@@ -1,52 +1,72 @@
-import React,{useState} from 'react';
-import {signupConnect} from '../api/auth.api.js';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { signupConnect } from "../api/auth.api.js";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const [form, setForm] = useState({
-    fname:"",
+    fname: "",
     email: "",
     password: "",
-    confirm_password:"",
-    organization:"",
-    profile_photo:""
+    confirm_password: "",
+    organization: "",
+    profile_photo: "",
   });
 
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { fname, email, password, confirm_password, organization, profile_photo} = form;
+  const {
+    fname,
+    email,
+    password,
+    confirm_password,
+    organization,
+    profile_photo,
+  } = form;
   const onChange = (e) => {
     let file = null;
     const { name, value } = e.target;
-    if(name === "profile_photo")
-    { file = e.target.files[0];}
-    setForm((prev) => ({...prev, [name]: value }));
-    if(file)
-    {
+    if (name === "profile_photo") {
+      file = e.target.files[0];
+    }
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (file) {
       setFile(file);
       setFileName(file.name);
     }
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log("Form data =>", form);
     const formData = new FormData();
-formData.append("fname", form.fname);
-formData.append("email", form.email);
-formData.append("password", form.password);
-formData.append("confirm_password", form.confirm_password);
-formData.append("organization", form.organization);
-formData.append("profile_photo", file); 
-if(password === confirm_password){
-console.log("Great!!");
-const result = await signupConnect(formData);
-console.log("Result =>", result.message);
-}
-else{
-  console.log("password should match");
-}
+    formData.append("fname", form.fname);
+    formData.append("email", form.email);
+    formData.append("password", form.password);
+
+    formData.append("organization", form.organization || "No Org");
+    formData.append("profile_photo", file);
+    if (password === confirm_password) {
+      console.log("Great!!");
+      const result = await signupConnect(formData);
+      console.log("Result =>", result.message);
+      setTimeout(() => {
+        setLoading(false);
+         setForm({
+      fname: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+      organization: "",
+      profile_photo: "",
+    });
+    setFile(null);
+    setFileName("")
+      }, 2000);
+    } else {
+      console.log("password should match");
+    }
   };
   return (
     <div className="login-page">
@@ -54,7 +74,7 @@ else{
       <div className="login-container">
         <h3>SINGNUP PAGE</h3>
         <form onSubmit={handleSubmit}>
-           <input
+          <input
             type="text"
             placeholder="Full Name"
             value={fname}
@@ -86,40 +106,45 @@ else{
             onChange={onChange}
             required
           />
-           <input
+          <input
             type="text"
             placeholder="Organization(optional)"
             value={organization}
             name="organization"
             onChange={onChange}
-            required
+            
           />
           <div className="input-box">
-            
-          <input
-            type="file"
-            value={profile_photo}
-            name="profile_photo"
-            onChange={onChange}
-            id='profile_photo'
-            required
-          />
-          <label htmlFor="profile_photo">Profile Photo</label>
-           {fileName && <p className='filename'>{fileName}</p>}
-          </div>   
-          <button className="btn btn-outline block mx-auto" type="submit">
-            Signup
+            <input
+              type="file"
+              value={profile_photo}
+              name="profile_photo"
+              onChange={onChange}
+              id="profile_photo"
+              required
+            />
+            <label htmlFor="profile_photo">Profile Photo</label>
+            {fileName && <p className="filename">{fileName}</p>}
+          </div>
+          <button className="btn btn-outline block mx-auto" type="submit" disabled={loading}>
+            {loading ? (<div className="btn-loader">
+              <div className="spinner-small"></div>
+              <span>Signing Up...</span>
+            </div>):"Signup"}
           </button>
-         
+          
         </form>
         <hr />
         <div className="addon-login">
           <p>Are you already registered ?</p>
-          <Link to="/login" className="font-bold">Login</Link>
+          <Link to="/login" className="font-bold">
+            Login
+          </Link>
         </div>
       </div>
+      {loading && <p className="loading">Finishing Signup...</p>}
     </div>
   );
 }
 
-export default Signup
+export default Signup;
