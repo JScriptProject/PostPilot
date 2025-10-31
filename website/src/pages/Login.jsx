@@ -1,21 +1,29 @@
 import React, { useState } from "react";
+import {loginConnect} from '../api/auth.api.js';
 import { Link } from 'react-router-dom';
 function Login() {
   const [form, setForm] = useState({
     email: "",
     password: "",
+    remember:false
   });
 
-  const { email, password } = form;
+  const { email, password, remember } = form;
 
   const onChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, type, value, checked } = e.target;
+    if(checked)
+    {
+      console.log("Checkbox Value =>", checked);
+    }
+    setForm((prev) => ({ ...prev, [name]: type==="checkbox" ? checked : value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log("Form data =>", form);
+    const result = await loginConnect(form);
+    console.log(result);
   };
   return (
     <div className="login-page">
@@ -39,7 +47,7 @@ function Login() {
           />
           <div className="addon-login-options">
             <div className="login-remember-section">
-              <input type="checkbox" name="remember" id="remember-check" /><label htmlFor="remember-check">Remember</label>
+              <input type="checkbox" name="remember" id="remember-check" checked={remember} onChange={onChange} /><label htmlFor="remember-check">Remember</label>
             </div>
             <div className="login-forget">
               <Link to="/forget-password">Forget password</Link>
