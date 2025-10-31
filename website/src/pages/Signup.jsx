@@ -14,6 +14,8 @@ function Signup() {
 
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState(null);
+  const [message, setMessage] = useState("");
+  const [passwordValidating, setPasswordValidating] = useState("");
   const [loading, setLoading] = useState(false);
   const {
     fname,
@@ -36,6 +38,7 @@ function Signup() {
     }
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -47,32 +50,54 @@ function Signup() {
 
     formData.append("organization", form.organization || "No Org");
     formData.append("profile_photo", file);
-    if (password === confirm_password) {
       console.log("Great!!");
       const result = await signupConnect(formData);
       console.log("Result =>", result.message);
+      setLoading(false);
+      setForm({
+        fname: "",
+        email: "",
+        password: "",
+        confirm_password: "",
+        organization: "",
+        profile_photo: "",
+      });
+      setFile(null);
+      setFileName("");
+      setMessage(result.message);
       setTimeout(() => {
-        setLoading(false);
-         setForm({
-      fname: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      organization: "",
-      profile_photo: "",
-    });
-    setFile(null);
-    setFileName("")
-      }, 2000);
+        setMessage("");
+      }, 4000);
+  
+  };
+
+  const onBlurPassword = (e) => {
+    const value = e.target.value;
+    if (value.length < 6) {
+      setPasswordValidating("Password should be minimum 6 character");
     } else {
-      console.log("password should match");
+      setPasswordValidating("");
     }
   };
+
+  const onBlurConfirm = (e) => {
+    const value = e.target.value;
+    if (value !== password) {
+      setPasswordValidating("Password should match");
+    } else {
+      setPasswordValidating("");
+    }
+  };
+
   return (
     <div className="login-page">
+      {message && <p className="message">{message}</p>}
       <h1>One step to manage your employees.</h1>
       <div className="login-container">
         <h3>SINGNUP PAGE</h3>
+        {passwordValidating && (
+          <p className="password-message">{passwordValidating}</p>
+        )}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -96,6 +121,8 @@ function Signup() {
             value={password}
             name="password"
             onChange={onChange}
+            minLength={6}
+            onBlur={onBlurPassword}
             required
           />
           <input
@@ -104,6 +131,7 @@ function Signup() {
             value={confirm_password}
             name="confirm_password"
             onChange={onChange}
+            onBlur={onBlurConfirm}
             required
           />
           <input
@@ -112,7 +140,6 @@ function Signup() {
             value={organization}
             name="organization"
             onChange={onChange}
-            
           />
           <div className="input-box">
             <input
@@ -126,13 +153,20 @@ function Signup() {
             <label htmlFor="profile_photo">Profile Photo</label>
             {fileName && <p className="filename">{fileName}</p>}
           </div>
-          <button className="btn btn-outline block mx-auto" type="submit" disabled={loading}>
-            {loading ? (<div className="btn-loader">
-              <div className="spinner-small"></div>
-              <span>Signing Up...</span>
-            </div>):"Signup"}
+          <button
+            className="btn btn-outline block mx-auto btn-signup"
+            type="submit"
+            disabled={loading || passwordValidating}
+          >
+            {loading ? (
+              <div className="btn-loader">
+                <div className="spinner-small"></div>
+                <span>Signing Up...</span>
+              </div>
+            ) : (
+              "Signup"
+            )}
           </button>
-          
         </form>
         <hr />
         <div className="addon-login">

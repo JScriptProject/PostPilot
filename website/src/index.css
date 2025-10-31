@@ -41,6 +41,14 @@ body {
   @apply bg-white text-black;
 }
 
+.btn-signup:disabled{
+  @apply cursor-not-allowed;
+}
+
+.btn-signup.btn-outline:disabled:hover{
+  @apply px-[1rem];
+} 
+
 .login-prompt {
   box-shadow: 0 0 10px 1px #ffffff42;
   top: 50%;
@@ -100,7 +108,7 @@ body {
 }
 
 .login-container{
-  @apply bg-gray-700 text-white w-[350px] mx-auto mt-[5rem] px-[2rem] py-[2rem] rounded-md;
+  @apply relative bg-gray-700 text-white w-[350px] mx-auto mt-[5rem] px-[2rem] py-[2.5rem] rounded-md;
 }
 
 .login-container h3{
@@ -167,3 +175,25 @@ body {
     transform: rotate(360deg);
   }
 }
+
+
+.login-container .password-message{
+  left:50%;
+  text-wrap: nowrap;
+  transform: translateX(-50%);
+   @apply absolute bottom-[1rem] text-[0.8rem] text-[#e76767];
+}
+
+.message{
+  left:50%;
+  transform: translateX(-50%);
+  animation: popUpAnim ease-in 0.3s forwards ;
+  @apply absolute bottom-[2rem] text-[1.2rem] text-[white] bg-green-500 px-[1rem] py-[0.5rem] rounded-md; 
+}
+
+.loading{
+  left:50%;
+  transform: translateX(-50%);
+  @apply absolute bottom-[2rem] text-[1.5rem] text-[black];
+}
+
