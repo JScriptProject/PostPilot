@@ -14,7 +14,7 @@ function Signup() {
 
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({msg:"",success:null});
   const [passwordValidating, setPasswordValidating] = useState("");
   const [loading, setLoading] = useState(false);
   const {
@@ -64,9 +64,9 @@ function Signup() {
       });
       setFile(null);
       setFileName("");
-      setMessage(result.message);
+      setMessage({msg:result.message, success:result.success});
       setTimeout(() => {
-        setMessage("");
+        setMessage({msg:"",success:null});
       }, 4000);
   
   };
@@ -74,30 +74,27 @@ function Signup() {
   const onBlurPassword = (e) => {
     const value = e.target.value;
     if (value.length < 6) {
-      setPasswordValidating("Password should be minimum 6 character");
+      setMessage({msg:"Password should be minimum 6 character", success:false});
     } else {
-      setPasswordValidating("");
+      setMessage({msg:"", success:null});
     }
   };
 
   const onBlurConfirm = (e) => {
     const value = e.target.value;
     if (value !== password) {
-      setPasswordValidating("Password should match");
+      setMessage({msg:"Password should match", success:false});
     } else {
-      setPasswordValidating("");
+      setMessage({msg:"", success:null});
     }
   };
 
   return (
     <div className="login-page">
-      {message && <p className="message">{message}</p>}
+      {/* {message && <p className="message">{message}</p>} */}
       <h1>One step to manage your employees.</h1>
       <div className="login-container">
         <h3>SINGNUP PAGE</h3>
-        {passwordValidating && (
-          <p className="password-message">{passwordValidating}</p>
-        )}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -154,7 +151,7 @@ function Signup() {
             {fileName && <p className="filename">{fileName}</p>}
           </div>
           <button
-            className="btn btn-outline block mx-auto btn-signup"
+            className="btn btn-outline block mx-auto btn-auth"
             type="submit"
             disabled={loading || passwordValidating}
           >
@@ -176,7 +173,8 @@ function Signup() {
           </Link>
         </div>
       </div>
-      {loading && <p className="loading">Finishing Signup...</p>}
+      {(message.msg && !message.success) && <p className="error-message message">{message.msg}</p>}
+      {(message.msg && message.success) && <p className="success-message message">{message.msg}</p>}
     </div>
   );
 }

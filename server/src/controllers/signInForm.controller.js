@@ -1,6 +1,6 @@
 import { asyncHandler } from "../util/asyncHandler.js";
 import { ApiError } from "../util/ApiError.js";
-import { SignIn } from "../models/signIn.model.js";
+import { Signup } from "../models/signup.model.js";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 
@@ -9,18 +9,17 @@ const signInForm = asyncHandler(async (req, res, next) => {
   const { email, password, remember } = body;
   console.log("in controller");
 
-  const user = await SignIn.findOne({ email });
+  const user = await Signup.findOne({ email });
   console.log(email, password, remember);
-  console.log("User",user);
+  console.log("User", user);
   if (!user) {
     throw new ApiError(404, "User not found!");
   }
- 
+
   //check if password is correct
   const isPasswordCorrect = await bcrypt.compare(password, user.password);
   console.log("IsPasswordCorrect", isPasswordCorrect);
-  if(!isPasswordCorrect)
-  {
+  if (!isPasswordCorrect) {
     console.log("Incorrect password");
     throw new ApiError(500, "Incorrect Email Id or password!");
   }
@@ -30,11 +29,42 @@ const signInForm = asyncHandler(async (req, res, next) => {
     id: user._id,
     email: user.email,
   };
-  const token = jsonwebtoken.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: 36000,
+
+  //create a access token
+  const accessToken = jsonwebtoken.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: "15m",
   });
 
-  res.success(200, { token: token }, "User Logged in succesfully");
+  //create a refresh token
+  const refreshToken = jsonwebtoken.sign(
+    { id: user._id },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+
+  //attach the access token with cookies
+  res.cookie("access_token", accessToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+
+  //attach the refresh token with cookie
+
+  res.cookie("refresh_token", refreshToken, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  console.log("Token = >", accessToken);
+  res.success(
+    200,
+    { user: user.fname, profile_photo: user.profile_photo },
+    "User Logged in succesfully"
+  );
 });
 
 export { signInForm };
