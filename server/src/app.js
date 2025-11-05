@@ -1,8 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from 'cors';
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
-dotenv.config();
 import authRouter from './routers/auth.router.js';
 import { errorHandler } from "./middlewares/errorHandler.middleware.js";
 import { responseMiddleware } from "./middlewares/ResponseHandler.middleware.js";

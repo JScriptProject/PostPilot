@@ -1,8 +1,8 @@
-import axios from "axios";
-const SERVER_URI = "http://localhost:8000";
+import api from "../api/axiosInstance.js";
+
 export const signupConnect = async (formData) => {
   try {
-    const response = await axios.post(`${SERVER_URI}/api/v1/signup`, formData);
+    const response = await api.post(`/api/v1/signup`, formData);
     console.log("Response =>", response);
     console.log("response data =>", response.data);
     // return response.data.message;
@@ -23,12 +23,11 @@ export const signupConnect = async (formData) => {
 
 export const loginConnect = async (formData) => {
   try {
-    const response = await axios.post(`${SERVER_URI}/api/v1/login`, formData);
-    console.log(response);
+    const response = await api.post(`/api/v1/login`, formData);
+    console.log("Login connect Response in aAPI =>",response);
     return {
       success: true,
       message: response.data.message,
-
       user: response.data.data.user,
       profile: response.data.data.profile_photo,
       status: response.status,
@@ -46,14 +45,12 @@ export const loginConnect = async (formData) => {
 
 export const verifySession = async () => {
   try {
-    const response = await axios.post(`${SERVER_URI}/api/v1/me`,{}, {
-      withCredentials: true,
-    });
-    console.log(response);
+    const response = await api.post(`/api/v1/me`);
+    console.log("Verify Session resposne in API",response);
     return {
       success: true,
       message: response.data.message,
-      user: response.data.data.user,
+      user: response.data.data,
       status: response.status,
     };
   } catch (error) {

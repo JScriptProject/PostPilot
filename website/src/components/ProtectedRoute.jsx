@@ -24,7 +24,7 @@ function ProtectedRoute({children}) {
         onSessionVerification();
     },[])
 
-    if(!authChecked) return(<p>Chekcing sessio...</p>);
+    if(!authChecked) return(<p>Chekcing session...</p>);
  console.log("final CHeck  =>", authChecked, authorized);
     return(
         authorized ? children : <Navigate to="/login" replace />
