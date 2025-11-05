@@ -27,7 +27,7 @@ const refreshSession = asyncHandler(async(req, res, next)=>{
         res.cookie("access_token", newAccessToken, {
             httpOnly: true, 
             secure: false, 
-            sameSite: "lax", 
+            sameSite: "None", 
             path:'/',
             maxAge: 15 * 60 * 1000
         });

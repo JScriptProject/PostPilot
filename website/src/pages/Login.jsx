@@ -27,6 +27,7 @@ function Login() {
       console.log("response =>", response);
       if(response.success)
       {
+        console.log("I am here");
         navigate("/dashboard");
       }
       else{
@@ -35,7 +36,7 @@ function Login() {
     }
     onSessionVerification();
    },[navigate])
-
+ console.log("Checking Session =>", checkingSession);
   //Onchnage function
   const onChange = (e) => {
     const { name, type, value, checked } = e.target;
