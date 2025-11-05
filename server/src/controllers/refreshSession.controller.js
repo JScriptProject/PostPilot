@@ -22,7 +22,7 @@ const refreshSession = asyncHandler(async(req, res, next)=>{
             return next(new ApiError(404, "User not found"));
         }
 
-        const newAccessToken = jwt.sign({id:user._id, email:user.email}, process.env.JWT_SECRET, {expiresIn:"15m"});
+        const newAccessToken = jwt.sign({id:user._id, email:user.email}, process.env.JWT_SECRET, {expiresIn:"1m"});
 
         res.cookie("access_token", newAccessToken, {
             httpOnly: true, 

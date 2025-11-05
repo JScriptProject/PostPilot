@@ -23,6 +23,7 @@ api.interceptors.response.use(
             } catch (error) {
                 console.log("Token refresh failed", error);
                 window.location.href = "/login";
+                return Promise.reject(error);
             }
         }
         return Promise.reject(error);

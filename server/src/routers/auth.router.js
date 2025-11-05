@@ -5,6 +5,7 @@ import { signInForm } from "../controllers/signInForm.controller.js";
 import {isAuthenticated} from '../middlewares/isAuthenticated.js';
 import { verifySession } from "../controllers/verifySession.controller.js";
 import { refreshSession } from "../controllers/refreshSession.controller.js";
+import {logout} from "../controllers/logout.controller.js";
 
 const router = express.Router();
 
@@ -14,4 +15,5 @@ router.post("/login", signInForm);
 router.post("/signup", upload.single("profile_photo"),signup);
 router.post("/me", isAuthenticated, verifySession);
 router.post("/refresh", refreshSession);
+router.post("/logout", logout);
 export default router;

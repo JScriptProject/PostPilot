@@ -63,3 +63,24 @@ export const verifySession = async () => {
     };
   }
 };
+
+export const logoutConnect = async() =>{
+
+  try {
+       const response = await api.post(`/api/v1/logout`);
+       console.log("Logout Response =>",response);
+       return{
+        success:true,
+        message:response.data.message,
+        status:response.status
+       };
+  } catch (error) {
+     console.log(error);
+     const errorMessage = error.response?.data?.message || "logout failed";
+     return{
+      success:false,
+      message:errorMessage,
+      status:error.response?.status || 500
+     }
+  }
+};
